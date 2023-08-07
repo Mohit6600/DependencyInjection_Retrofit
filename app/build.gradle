@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+
+    // it also add for dependency Injection
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.example.dependencyinjection_retrofit'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.dependencyinjection_retrofit"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
+    }
+    kotlinOptions {
+        jvmTarget = '18'
+    }
+}
+
+dependencies {
+
+    // dependency injection from here
+    def activity_version = "1.7.2"
+
+    // Kotlin
+    implementation("androidx.activity:activity-ktx:$activity_version")
+
+    def lifecycle_version = "2.6.1"
+    // to here
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // implementation dagger dependencies injection
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
+    implementation 'com.google.dagger:hilt-android:2.45'
+
+    kapt 'com.google.dagger:hilt-compiler:2.45'
+
+    implementation "com.squareup.retrofit2:retrofit:2.9.0" //retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+}
