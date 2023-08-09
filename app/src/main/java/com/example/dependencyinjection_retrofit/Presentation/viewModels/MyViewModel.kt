@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dependencyinjection_retrofit.Repository.MainRepostitory
-import com.example.dependencyinjection_retrofit.retrofit.networkApi.utils.ApiState
-import com.example.dependencyinjection_retrofit.retrofit.networkApi.utils.ApiState2
+import com.example.dependencyinjection_retrofit.Rettrofit.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -32,14 +31,14 @@ class MyViewModel @Inject constructor(
 
     }*/
 
-    private val productPostResponse2 : MutableLiveData<ApiState2> = MutableLiveData()
-    var productPostResponseObserver2 : LiveData<ApiState2> = productPostResponse2
+    private val productPostResponse : MutableLiveData<ApiState> = MutableLiveData()
+    var productPostResponseObserver : LiveData<ApiState> = productPostResponse
 
-    suspend fun getProduct2() = viewModelScope.launch {
+    suspend fun getProduct() = viewModelScope.launch {
 
-        productPostResponse2.postValue(ApiState2.Loading2)
+        productPostResponse.postValue(ApiState.Loading)
         delay(1000)
-        productPostResponse2.postValue(ApiState2.Success2(mainRepostitory.sendProductList()))
+        productPostResponse.postValue(ApiState.Success(mainRepostitory.sendProductList()))
 
     }
 

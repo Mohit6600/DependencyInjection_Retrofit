@@ -1,4 +1,4 @@
-package com.example.dependencyinjection_retrofit.base
+package com.example.dependencyinjection_retrofit.Base
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

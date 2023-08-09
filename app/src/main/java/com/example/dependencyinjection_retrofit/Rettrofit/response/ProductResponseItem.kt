@@ -1,4 +1,4 @@
-package com.example.dependencyinjection_retrofit.retrofit.networkApi.response
+package com.example.dependencyinjection_retrofit.Rettrofit.response
 
 data class ProductResponseItem(
     val id: Int,

@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dependencyinjection_retrofit.Rettrofit.response.ProductItem
 import com.example.dependencyinjection_retrofit.R
-import com.example.dependencyinjection_retrofit.retrofit.networkApi.response.ProductResponseItem
 
-class MyAdapter(val context: Context, val myProductList: List<ProductResponseItem>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(val context: Context, val myProductList: List<ProductItem>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     class ViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
 
         var id = itemView.findViewById<TextView>(R.id.id)
