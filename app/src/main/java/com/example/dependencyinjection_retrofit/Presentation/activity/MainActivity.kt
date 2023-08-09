@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dependencyinjection_retrofit.Adapter.MyAdapter
-import com.example.dependencyinjection_retrofit.Presentation.viewModels.MyViewModel
-import com.example.dependencyinjection_retrofit.Rettrofit.response.ProductItem
+import com.example.dependencyinjection_retrofit.Presentation.viewModels.ProductViewModel
+import com.example.dependencyinjection_retrofit.Retrofit.response.ProductItem
 import com.example.dependencyinjection_retrofit.R
-import com.example.dependencyinjection_retrofit.Rettrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.Retrofit.utils.ApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     lateinit var textView: TextView
-    val viewModel: MyViewModel by viewModels()
+    val viewModel: ProductViewModel by viewModels()
 
     lateinit var myAdapter: MyAdapter
     lateinit var recyclerView: RecyclerView
@@ -29,6 +29,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        initViews()
+        setObservers()
+
+        GlobalScope.launch {
+
+            viewModel.addProduct()
+        }
+
+
+    }
+
+
+    fun initViews() {
+
         textView = findViewById(R.id.textView)
 
 
@@ -37,33 +52,38 @@ class MainActivity : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = linearLayoutManager
 
-        /*       viewModel.productPostResponseObserver.observe(this){res ->
+
+    }
 
 
-                   when (res){
+    /*       viewModel.productPostResponseObserver.observe(this){res ->
 
-                       is ApiState.Loading -> {
 
-                           textView.text = "Loading"
+           when (res){
 
-                       }
+               is ApiState.Loading -> {
 
-                       is ApiState.Success -> {
+                   textView.text = "Loading"
 
-                         val ourProduct = res.data ?: emptyList<ProductResponseItem>()
-
-                           myAdapter = MyAdapter(baseContext,ourProduct)
-                           recyclerView.adapter = myAdapter
-
-                       }
-
-                   }
                }
-               GlobalScope.launch {
 
-                   viewModel.getProduct()
-               }*/
+               is ApiState.Success -> {
 
+                 val ourProduct = res.data ?: emptyList<ProductResponseItem>()
+
+                   myAdapter = MyAdapter(baseContext,ourProduct)
+                   recyclerView.adapter = myAdapter
+
+               }
+
+           }
+       }
+       GlobalScope.launch {
+
+           viewModel.getProduct()
+       }*/
+
+    fun setObservers() {
 
         viewModel.productPostResponseObserver.observe(this) { res ->
 
@@ -88,12 +108,10 @@ class MainActivity : AppCompatActivity() {
 
 
             }
-        }
-        GlobalScope.launch {
 
-            viewModel.getProduct()
         }
-
 
     }
 }
+
+

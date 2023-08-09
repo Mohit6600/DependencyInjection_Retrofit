@@ -1,6 +1,6 @@
 package com.example.dependencyinjection_retrofit.Di
 
-import com.example.dependencyinjection_retrofit.Rettrofit.networkApi.MyApi
+import com.example.dependencyinjection_retrofit.Retrofit.networkApi.MyApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +18,14 @@ class AppModule {
     @Singleton
     fun provideApiService(): MyApi = Retrofit.Builder().run {
 
-        baseUrl("https://fakestoreapi.com/").addConverterFactory(GsonConverterFactory.create()).build()
+        baseUrl(Const.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }.create(MyApi::class.java)
 
+
+}
+
+object Const{
+
+  const val BASE_URL="https://fakestoreapi.com/"
 
 }

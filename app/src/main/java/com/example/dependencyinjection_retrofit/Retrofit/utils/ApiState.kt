@@ -1,7 +1,6 @@
-package com.example.dependencyinjection_retrofit.Rettrofit.utils
+package com.example.dependencyinjection_retrofit.Retrofit.utils
 
-import com.example.dependencyinjection_retrofit.Rettrofit.response.ProductItem
-import com.example.dependencyinjection_retrofit.Rettrofit.response.ProductResponse
+import com.example.dependencyinjection_retrofit.Retrofit.response.ProductItem
 
 
 /*sealed class ApiState {
