@@ -1,12 +1,12 @@
-package com.example.dependencyinjection_retrofit.Presentation.viewModels
+package com.example.dependencyinjection_retrofit.presentation.viewModels
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dependencyinjection_retrofit.Repository.MainRepository
-import com.example.dependencyinjection_retrofit.Retrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.repository.MainRepository
+import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay

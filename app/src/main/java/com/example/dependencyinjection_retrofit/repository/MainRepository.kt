@@ -1,9 +1,9 @@
-package com.example.dependencyinjection_retrofit.Repository
+package com.example.dependencyinjection_retrofit.repository
 
-import com.example.dependencyinjection_retrofit.Retrofit.response.ProductItem
-import com.example.dependencyinjection_retrofit.Retrofit.response.ProductRequestItem
-import com.example.dependencyinjection_retrofit.Retrofit.networkApi.MyApi
-import com.example.dependencyinjection_retrofit.Retrofit.response.ProductResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
+import com.example.dependencyinjection_retrofit.retrofit.response.ProductRequestItem
+import com.example.dependencyinjection_retrofit.retrofit.networkApi.MyApi
+import com.example.dependencyinjection_retrofit.retrofit.response.ProductResponse
 import javax.inject.Inject
 
 

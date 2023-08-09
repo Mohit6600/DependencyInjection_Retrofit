@@ -1,4 +1,4 @@
-package com.example.dependencyinjection_retrofit.Presentation.activity
+package com.example.dependencyinjection_retrofit.presentation.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,11 +6,11 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dependencyinjection_retrofit.Adapter.MyAdapter
-import com.example.dependencyinjection_retrofit.Presentation.viewModels.ProductViewModel
-import com.example.dependencyinjection_retrofit.Retrofit.response.ProductItem
+import com.example.dependencyinjection_retrofit.adapter.MyAdapter
+import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
+import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
 import com.example.dependencyinjection_retrofit.R
-import com.example.dependencyinjection_retrofit.Retrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

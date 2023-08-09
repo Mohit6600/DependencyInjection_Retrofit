@@ -1,4 +1,4 @@
-package com.example.dependencyinjection_retrofit.Adapter
+package com.example.dependencyinjection_retrofit.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dependencyinjection_retrofit.Retrofit.response.ProductItem
+import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
 import com.example.dependencyinjection_retrofit.R
 
 class MyAdapter(val context: Context, val myProductList: List<ProductItem>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {

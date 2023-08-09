@@ -1,6 +1,6 @@
-package com.example.dependencyinjection_retrofit.Di
+package com.example.dependencyinjection_retrofit.di
 
-import com.example.dependencyinjection_retrofit.Retrofit.networkApi.MyApi
+import com.example.dependencyinjection_retrofit.retrofit.networkApi.MyApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
