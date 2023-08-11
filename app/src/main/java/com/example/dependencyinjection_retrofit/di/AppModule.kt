@@ -5,8 +5,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -17,8 +20,19 @@ class AppModule {
     @Provides
     @Singleton
     fun provideApiService(): MyApi = Retrofit.Builder().run {
-
-        baseUrl(Constant.BASE_URL_JSON).addConverterFactory(GsonConverterFactory.create()).build()
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        OkHttpClient.Builder()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
+            .writeTimeout(100, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+            .retryOnConnectionFailure(true)
+            .build()
+        baseUrl(Constant.BASE_URL_JSON).client(
+            OkHttpClient.Builder().addInterceptor(loggingInterceptor)
+                .build()
+        ).addConverterFactory(GsonConverterFactory.create()).build()
     }.create(MyApi::class.java)
 
 
@@ -30,8 +44,8 @@ class AppModule {
 
 }*/
 
-object Constant{
+object Constant {
 
-    const val BASE_URL_JSON="https://strapi-crud-api.onrender.com/"
+    const val BASE_URL_JSON = "https://strapi-crud-api.onrender.com/"
 
 }

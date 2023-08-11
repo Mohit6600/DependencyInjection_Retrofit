@@ -30,18 +30,24 @@ class MainActivity : AppCompatActivity() {
     lateinit var myAdapter: MyAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var linearLayoutManager: LinearLayoutManager
-
-    val name = findViewById<EditText>(R.id.name)
-    val password = findViewById<EditText>(R.id.password)
-    val saveBtn = findViewById<Button>(R.id.button)
-    val textView = findViewById<TextView>(R.id.textView)
+    lateinit var name: EditText
+    lateinit var password: EditText
+    lateinit var saveBtn: Button
+    lateinit var textView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
 
+        name = findViewById<EditText>(R.id.name)
+        password = findViewById<EditText>(R.id.password)
+        saveBtn = findViewById<Button>(R.id.button)
+        textView = findViewById<TextView>(R.id.textView)
 
         /* initViews()*/
         setObservers()
+        GlobalScope.launch {
+            viewModel.loginUser("suraj854", "1234567")
+        }
 
         /* GlobalScope.launch {
 
@@ -128,7 +134,6 @@ class MainActivity : AppCompatActivity() {
     fun setObservers() {
 
 
-        viewModel.loginUser()
         viewModel.userPostResponseObserver.observe(this) { res ->
 
 
@@ -144,11 +149,13 @@ class MainActivity : AppCompatActivity() {
 
                     val user = res.data
 
+
                 }
 
                 is ApiState.Error -> {
 
-                    textView.text = "wrong id or password"
+                    val user = res.data
+                    textView.text =  user.error.message
 
                 }
 
