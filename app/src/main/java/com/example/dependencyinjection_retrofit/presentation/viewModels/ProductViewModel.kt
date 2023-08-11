@@ -51,23 +51,21 @@ class ProductViewModel @Inject constructor(
     fun loginUser(username: String, password: String) {
         viewModelScope.launch {
             userPostResponse.postValue(ApiState.Loading)
-
             try {
                 val response = mainRepostitory.loginUser(username, password)
                 userPostResponse.postValue(ApiState.Success(response))
             } catch (e: HttpException) {
+                val response = e.response()?.errorBody()?.string()
+                val loginErrorResponse = Gson().fromJson(
+                    response,
+                    LoginErrorResponse::class.java
+                )
+                userPostResponse.postValue(ApiState.Error(loginErrorResponse))
 
-                e.response()?.errorBody()?.string()?.let {
-                    val loginErrorResponse = Gson().fromJson(
-                        it,
-                        LoginErrorResponse::class.java
-                    )
-                    userPostResponse.postValue(ApiState.Error(loginErrorResponse))
-
-                }
-                //userPostResponse.postValue(ApiState.Error(errorBody))
             }
+            //userPostResponse.postValue(ApiState.Error(errorBody))
         }
-
     }
+
+}
 }
