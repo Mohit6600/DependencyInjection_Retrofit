@@ -127,12 +127,8 @@ class MainActivity : AppCompatActivity() {
 
     fun setObservers() {
 
-        val isUserExist: Boolean =
-            name.text.toString().isEmpty() && password.text.toString().isEmpty()
 
-
-
-        viewModel.loginUser(name,password)
+        viewModel.loginUser()
         viewModel.userPostResponseObserver.observe(this) { res ->
 
 
