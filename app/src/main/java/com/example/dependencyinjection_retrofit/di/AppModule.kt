@@ -18,14 +18,20 @@ class AppModule {
     @Singleton
     fun provideApiService(): MyApi = Retrofit.Builder().run {
 
-        baseUrl(Const.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+        baseUrl(Constant.BASE_URL_JSON).addConverterFactory(GsonConverterFactory.create()).build()
     }.create(MyApi::class.java)
 
 
 }
 
-object Const{
+/*object Const{
 
   const val BASE_URL="https://fakestoreapi.com/"
+
+}*/
+
+object Constant{
+
+    const val BASE_URL_JSON="https://strapi-crud-api.onrender.com/"
 
 }

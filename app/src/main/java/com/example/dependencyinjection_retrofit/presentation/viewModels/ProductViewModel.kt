@@ -16,11 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     @ApplicationContext private val context: Context, private val mainRepostitory: MainRepository
-):ViewModel(){
+):ViewModel() {
 
 
-
-/*    private val productPostResponse : MutableLiveData<ApiState> = MutableLiveData()
+    /*    private val productPostResponse : MutableLiveData<ApiState> = MutableLiveData()
     var productPostResponseObserver : LiveData<ApiState> = productPostResponse
 
     suspend fun getProduct() = viewModelScope.launch {
@@ -31,7 +30,7 @@ class ProductViewModel @Inject constructor(
 
     }*/
 
-    private val productPostResponse : MutableLiveData<ApiState> = MutableLiveData()
+    /*   private val productPostResponse : MutableLiveData<ApiState> = MutableLiveData()
     var productPostResponseObserver : LiveData<ApiState> = productPostResponse
 
     suspend fun addProduct() = viewModelScope.launch {
@@ -40,8 +39,21 @@ class ProductViewModel @Inject constructor(
         delay(1000)
         productPostResponse.postValue(ApiState.Success(mainRepostitory.addProductList()))
 
+    }*/
+
+    private val userPostResponse: MutableLiveData<ApiState> = MutableLiveData()
+    var userPostResponseObserver: LiveData<ApiState> = userPostResponse
+
+    fun loginUser(username: String, password: String) {
+        viewModelScope.launch {
+            userPostResponse.postValue(ApiState.Loading)
+            try {
+                val response = mainRepostitory.loginUser(username, password)
+                userPostResponse.postValue(ApiState.Success(response))
+            } catch (e: Exception) {
+                userPostResponse.postValue(ApiState.Error("Login failed"))
+            }
+        }
+
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 package com.example.dependencyinjection_retrofit.retrofit.networkApi
 
+import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
 import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
 import com.example.dependencyinjection_retrofit.retrofit.response.ProductRequestItem
 import com.example.dependencyinjection_retrofit.retrofit.response.ProductResponse
@@ -14,5 +15,9 @@ interface MyApi {
 
     @POST("products")
     suspend fun addProduct(@Body product: ProductRequestItem): ProductItem
+
+    @POST("api/auth/local")
+    suspend fun loginUser(@Body User:PersonItem):PersonItem
+
 
 }
