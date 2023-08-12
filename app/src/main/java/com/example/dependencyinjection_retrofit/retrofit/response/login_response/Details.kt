@@ -1,0 +1,3 @@
+package com.example.dependencyinjection_retrofit.retrofit.response.login_response
+
+class Details

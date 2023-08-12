@@ -3,6 +3,7 @@ package com.example.dependencyinjection_retrofit.presentation.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.LoginFilter.UsernameFilterGMail
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -23,30 +24,34 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    /* lateinit var textView: TextView*/
 
     val viewModel: ProductViewModel by viewModels()
 
     lateinit var myAdapter: MyAdapter
     lateinit var recyclerView: RecyclerView
     lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var name: EditText
+    lateinit var password: EditText
+    lateinit var saveBtn: Button
+    lateinit var textView: TextView
 
-    val name = findViewById<EditText>(R.id.name)
-    val password = findViewById<EditText>(R.id.password)
-    val saveBtn = findViewById<Button>(R.id.button)
-    val textView = findViewById<TextView>(R.id.textView)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
 
+        name = findViewById(R.id.name)
+        password = findViewById(R.id.password)
+         saveBtn = findViewById(R.id.button)
+         textView = findViewById(R.id.textView)
 
         /* initViews()*/
         setObservers()
 
-        /* GlobalScope.launch {
+         GlobalScope.launch {
 
-             viewModel.()
-         }*/
+             viewModel.loginUser("mohit6600","mohit123")
+         }
 
 
     }
@@ -128,7 +133,7 @@ class MainActivity : AppCompatActivity() {
     fun setObservers() {
 
 
-        viewModel.loginUser()
+
         viewModel.userPostResponseObserver.observe(this) { res ->
 
 
@@ -148,8 +153,8 @@ class MainActivity : AppCompatActivity() {
 
                 is ApiState.Error -> {
 
-                    textView.text = "wrong id or password"
-
+                    val user = res.data
+                    textView.text = user.error.message
                 }
 
 

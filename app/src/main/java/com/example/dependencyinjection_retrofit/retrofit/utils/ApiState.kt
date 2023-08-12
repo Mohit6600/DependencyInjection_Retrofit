@@ -1,8 +1,8 @@
 package com.example.dependencyinjection_retrofit.retrofit.utils
 
-import android.app.Person
 import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
-import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
+import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginErrorResponse
 
 
 /*sealed class ApiState {
@@ -26,9 +26,9 @@ import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
 sealed class ApiState{
 
     object Loading: ApiState()
-    class  Success(val data : PersonItem): ApiState()
+    class  Success(val data: LoginResponse): ApiState()
 
-    class Error(val checkData: String): ApiState()
+    class Error(val data: LoginErrorResponse): ApiState()
 
 
 }
