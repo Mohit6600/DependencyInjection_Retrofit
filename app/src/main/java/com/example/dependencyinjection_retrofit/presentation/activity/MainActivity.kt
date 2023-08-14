@@ -15,10 +15,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.dependencyinjection_retrofit.BlankClass
 import com.example.dependencyinjection_retrofit.adapter.MyAdapter
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
 import com.example.dependencyinjection_retrofit.R
+import com.example.dependencyinjection_retrofit.database.AppDatabase
 import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
 import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
 
     val viewModel: ProductViewModel by viewModels()
+    lateinit var database: AppDatabase
 
     lateinit var myAdapter: MyAdapter
     lateinit var recyclerView: RecyclerView
@@ -49,17 +52,14 @@ class MainActivity : AppCompatActivity() {
         password = findViewById(R.id.password)
         btn = findViewById(R.id.button)
         textView = findViewById(R.id.textView)
-        saveBtn = findViewById(R.id.saveBtn)
 
         /* initViews()*/
         setObservers()
 
 
-
-
         GlobalScope.launch {
 
-            btn.setOnClickListener{
+            btn.setOnClickListener {
 
 
                 val username = name.text.toString()
@@ -70,21 +70,16 @@ class MainActivity : AppCompatActivity() {
 
 
             }
-
-
-
         }
 
 
-   /*     val sharedPreference: SharedPreferences =
-            getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
-            val editor = sharedPreference.edit()
-            editor.putString("userName", username)
-            editor.putString("userPassword", userpassword)
-            editor.apply()
-*/
-
-
+        /*     val sharedPreference: SharedPreferences =
+                 getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
+                 val editor = sharedPreference.edit()
+                 editor.putString("userName", username)
+                 editor.putString("userPassword", userpassword)
+                 editor.apply()
+     */
     }
 
 
@@ -154,7 +149,6 @@ class MainActivity : AppCompatActivity() {
 
                    }
 
-
                }
 
            }
@@ -179,10 +173,11 @@ class MainActivity : AppCompatActivity() {
 
                     val user = res.data
 
-                        val intent = Intent(applicationContext, BlankClass::class.java)
-                        startActivity(intent)
+                    val intent = Intent(applicationContext, BlankClass::class.java)
+                    startActivity(intent)
 
-                    Toast.makeText(applicationContext,"login Successful",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "login Successful", Toast.LENGTH_SHORT)
+                        .show()
                     textView.text = "login success"
 
                 }
@@ -192,7 +187,6 @@ class MainActivity : AppCompatActivity() {
                     val user = res.data
                     textView.text = user.error.message
                 }
-
 
             }
 

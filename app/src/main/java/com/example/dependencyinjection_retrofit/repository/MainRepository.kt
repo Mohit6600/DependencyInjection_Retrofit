@@ -3,6 +3,7 @@ package com.example.dependencyinjection_retrofit.repository
 import com.example.dependencyinjection_retrofit.retrofit.networkApi.MyApi
 import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
 import com.example.dependencyinjection_retrofit.retrofit.response.ProductResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.RegisterUser
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
 import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
 import javax.inject.Inject
@@ -37,4 +38,8 @@ class MainRepository @Inject constructor(private val myApi: MyApi) {
         return myApi.loginUser(personItem)
     }
 
+    suspend fun registerUser(username: String, password: String , email: String): LoginResponse {
+        val registerItem = RegisterUser(username, password , email)
+        return myApi.registerUser(registerItem)
+    }
 }

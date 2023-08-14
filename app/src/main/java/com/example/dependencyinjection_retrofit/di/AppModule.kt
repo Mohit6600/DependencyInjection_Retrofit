@@ -30,12 +30,9 @@ class AppModule {
             .addInterceptor(loggingInterceptor).retryOnConnectionFailure(true).build()
 
 
-
-
         baseUrl(Constant.BASE_URL_JSON).client(OkHttpClient.Builder().addInterceptor(loggingInterceptor).build())
             .addConverterFactory(GsonConverterFactory.create()).build()
     }.create(MyApi::class.java)
-
 
 }
 
@@ -47,6 +44,8 @@ class AppModule {
 
 object Constant {
 
-    const val BASE_URL_JSON = "https://strapi-crud-api.onrender.com/"
+       const val BASE_URL_JSON = "https://strapi-crud-api.onrender.com/"
+
+
 
 }

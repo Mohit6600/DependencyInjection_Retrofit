@@ -67,4 +67,25 @@ class ProductViewModel @Inject constructor(
 
 
     }
+
+    fun registerUser(username1: String, password1: String, email:String) {
+
+        Log.d("Mohit",username1)
+        viewModelScope.launch {
+            userPostResponse.postValue(ApiState.Loading)
+            try {
+                val response = mainRepository.registerUser(username1, password1 , email)
+                userPostResponse.postValue(ApiState.Success(response))
+            } catch (e: HttpException) {
+
+                val response = e.response()?.errorBody()?.string()          // this line get the error response and extract them into a e.body to string
+                val loginErrorResponse = Gson().fromJson(response,LoginErrorResponse::class.java)  // this line convert the jason error in kotlin object of type
+
+                userPostResponse.postValue(ApiState.Error(loginErrorResponse))
+            }
+        }
+
+
+
+    }
 }
