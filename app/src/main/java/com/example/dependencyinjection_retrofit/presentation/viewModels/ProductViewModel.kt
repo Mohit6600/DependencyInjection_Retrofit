@@ -8,7 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dependencyinjection_retrofit.repository.MainRepository
 import com.example.dependencyinjection_retrofit.retrofit.response.loginResponse.LoginErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.registerResponse.RegisterErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.registerResponse.RegisterResponse
 import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.RegisterApiState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -48,6 +51,8 @@ class ProductViewModel @Inject constructor(
     private val userPostResponse: MutableLiveData<ApiState> = MutableLiveData()
     var userPostResponseObserver: LiveData<ApiState> = userPostResponse
 
+    private val userRegisterResponse: MutableLiveData<RegisterApiState> = MutableLiveData()
+    var userRegisterResponseObserver: LiveData<RegisterApiState> = userRegisterResponse
     fun loginUser(username: String, password: String) {
         viewModelScope.launch {
             userPostResponse.postValue(ApiState.Loading)
@@ -67,5 +72,22 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    fun registerUser(username: String, email: String, password: String) {
+        viewModelScope.launch {
+            userRegisterResponse.postValue(RegisterApiState.Loading)
+            try {
+                val response = mainRepostitory.registerUser(email, password, username)
+                userRegisterResponse.postValue(RegisterApiState.Success(response))
+            } catch (e: HttpException) {
+                val response = e.response()?.errorBody()?.string()
+                val loginErrorResponse = Gson().fromJson(
+                    response,
+                    RegisterErrorResponse::class.java
+                )
+                userRegisterResponse.postValue(RegisterApiState.Error(loginErrorResponse))
 
+            }
+            //userPostResponse.postValue(ApiState.Error(errorBody))
+        }
+    }
 }
