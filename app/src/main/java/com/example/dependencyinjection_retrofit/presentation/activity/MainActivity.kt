@@ -1,12 +1,8 @@
 package com.example.dependencyinjection_retrofit.presentation.activity
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.LoginFilter.UsernameFilterGMail
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -15,14 +11,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.dependencyinjection_retrofit.BlankClass
 import com.example.dependencyinjection_retrofit.adapter.MyAdapter
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
 import com.example.dependencyinjection_retrofit.R
 import com.example.dependencyinjection_retrofit.database.AppDatabase
-import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
-import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -163,13 +157,13 @@ class MainActivity : AppCompatActivity() {
 
             when (res) {
 
-                is ApiState.Loading -> {
+                is LoginApiState.Loading -> {
 
                     textView.text = "Loading"
 
                 }
 
-                is ApiState.Success -> {
+                is LoginApiState.Success -> {
 
                     val user = res.data
 
@@ -182,7 +176,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                is ApiState.Error -> {
+                is LoginApiState.Error -> {
 
                     val user = res.data
                     textView.text = user.error.message

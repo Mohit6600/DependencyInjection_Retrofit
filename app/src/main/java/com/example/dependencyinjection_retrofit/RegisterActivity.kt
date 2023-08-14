@@ -8,67 +8,49 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dependencyinjection_retrofit.presentation.activity.MainActivity
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
-import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.RegisterApiState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
 
 
-    val viewModel: ProductViewModel by viewModels()
+    val registerViewModel: ProductViewModel by viewModels()
 
     lateinit var name: EditText
     lateinit var password: EditText
-    lateinit var email : EditText
+    lateinit var email: EditText
 
-    lateinit var saveBtn: Button
-
+    lateinit var registerBtn: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_activity)
 
-        name = findViewById(R.id.nameBox)
-        password = findViewById(R.id.passwordBox)
-        saveBtn = findViewById(R.id.addUser)
-        email = findViewById(R.id.email)
 
 
+        initViews()
         setObservers1()
 
 
-        GlobalScope.launch {
 
-            saveBtn.setOnClickListener {
-
-
-                val username = name.text.toString()
-                val userpassword = password.text.toString()
-                val email1 = email.text.toString()
+        /*    database = Room.databaseBuilder(applicationContext,AppDatabase::class.java,"my database").build()
 
 
-                Log.d("singh", username)
-                viewModel.registerUser(username, userpassword , email1)
+            addUser = findViewById(R.id.addUser)
+            nameBox = findViewById(R.id.nameBox)
+            passwordBox = findViewById(R.id.passwordBox)
+            phoneNo = findViewById(R.id.phoneNo)
 
+            addUser.setOnClickListener{
 
-            }
-        }
-
-
-
-    /*    database = Room.databaseBuilder(applicationContext,AppDatabase::class.java,"my database").build()
-
-
-        addUser = findViewById(R.id.addUser)
-        nameBox = findViewById(R.id.nameBox)
-        passwordBox = findViewById(R.id.passwordBox)
-        phoneNo = findViewById(R.id.phoneNo)
-
-        addUser.setOnClickListener{
-
-          *//*  if (!nameBox.text.toString().isEmpty() && !passwordBox.text.toString().isEmpty()){*//*
+              *//*  if (!nameBox.text.toString().isEmpty() && !passwordBox.text.toString().isEmpty()){*//*
 
                 val username = nameBox.text.toString()
                 val password = passwordBox.text.toString()
@@ -87,47 +69,71 @@ class RegisterActivity : AppCompatActivity() {
                 }*/
 
 
+    }
 
 
+    private fun initViews() {
 
+        name = findViewById(R.id.nameBox)
+        password = findViewById(R.id.passwordBox)
+        registerBtn = findViewById(R.id.registerBtn)
+        email = findViewById(R.id.email)
 
+        registerBtn.setOnClickListener {
 
+            GlobalScope.launch {
+
+                val username = name.text.toString()
+                val userpassword = password.text.toString()
+                val email1 = email.text.toString()
+                registerViewModel.registerUser(username, userpassword, email1)
 
 
             }
+        }
+
+    }
+
+
+
 
     fun setObservers1() {
 
 
-        viewModel.userPostResponseObserver.observe(this) { res ->
+        registerViewModel.registerPostResponseObserver.observe(this) { res ->
 
 
             when (res) {
 
-                is ApiState.Loading -> {
+                is RegisterApiState.Loading -> {
 
-                  Toast.makeText(applicationContext,"Loading",Toast.LENGTH_SHORT).show()
+                    registerBtn.text = "please wait...."
+                    Toast.makeText(applicationContext, "Loading", Toast.LENGTH_SHORT).show()
 
                 }
 
-                is ApiState.Success -> {
+                is RegisterApiState.Success -> {
 
-                    val user = res.data
+                    registerBtn.text = "Register"
 
-                    val intent = Intent(applicationContext, BlankClass::class.java)
-                    startActivity(intent)
-
-                    Toast.makeText(applicationContext, "login Successful", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        applicationContext,
+                        "Account Registered Successful",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
 
-
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
 
                 }
 
-                is ApiState.Error -> {
+                is RegisterApiState.Error -> {
 
+                    registerBtn.text = "Error"
                     val user = res.data
-                    Toast.makeText(applicationContext,user.error.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, user.error.message, Toast.LENGTH_SHORT)
+                        .show()
 
                 }
 
@@ -137,7 +143,7 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-        }
+}
 
 
 

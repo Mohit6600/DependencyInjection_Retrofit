@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dependencyinjection_retrofit.repository.MainRepository
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginErrorResponse
-import com.example.dependencyinjection_retrofit.retrofit.utils.ApiState
+import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.RegisterApiState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     @ApplicationContext private val context: Context, private val mainRepository: MainRepository
-):ViewModel() {
+) : ViewModel() {
 
 
     /*    private val productPostResponse : MutableLiveData<ApiState> = MutableLiveData()
@@ -44,47 +46,55 @@ class ProductViewModel @Inject constructor(
 
     }*/
 
-    private val userPostResponse: MutableLiveData<ApiState> = MutableLiveData()
-    var userPostResponseObserver: LiveData<ApiState> = userPostResponse
+    private val userPostResponse: MutableLiveData<LoginApiState> = MutableLiveData()
+    var userPostResponseObserver: LiveData<LoginApiState> = userPostResponse
 
     fun loginUser(username: String, password: String) {
 
-        Log.d("Mohit",username)
+        Log.d("Mohit", username)
         viewModelScope.launch {
-            userPostResponse.postValue(ApiState.Loading)
+            userPostResponse.postValue(LoginApiState.Loading)
             try {
                 val response = mainRepository.loginUser(username, password)
-                userPostResponse.postValue(ApiState.Success(response))
+                userPostResponse.postValue(LoginApiState.Success(response))
             } catch (e: HttpException) {
 
-                val response = e.response()?.errorBody()?.string()          // this line get the error response and extract them into a e.body to string
-                val loginErrorResponse = Gson().fromJson(response,LoginErrorResponse::class.java)  // this line convert the jason error in kotlin object of type
+                val response = e.response()?.errorBody()
+                    ?.string()          // this line get the error response and extract them into a e.body to string
+                val loginErrorResponse = Gson().fromJson(
+                    response,
+                    LoginErrorResponse::class.java
+                )  // this line convert the jason error in kotlin object of type
 
-                userPostResponse.postValue(ApiState.Error(loginErrorResponse))
+                userPostResponse.postValue(LoginApiState.Error(loginErrorResponse))
             }
         }
-
 
 
     }
 
-    fun registerUser(username1: String, password1: String, email:String) {
+    private val registerPostResponse: MutableLiveData<RegisterApiState> = MutableLiveData()
+    var registerPostResponseObserver: LiveData<RegisterApiState> = registerPostResponse
 
-        Log.d("Mohit",username1)
+    fun registerUser(username: String, password: String, email: String) {
+
         viewModelScope.launch {
-            userPostResponse.postValue(ApiState.Loading)
+            registerPostResponse.postValue(RegisterApiState.Loading)
             try {
-                val response = mainRepository.registerUser(username1, password1 , email)
-                userPostResponse.postValue(ApiState.Success(response))
+                val response = mainRepository.registerUser(email, password, username)
+                registerPostResponse.postValue(RegisterApiState.Success(response))
             } catch (e: HttpException) {
 
-                val response = e.response()?.errorBody()?.string()          // this line get the error response and extract them into a e.body to string
-                val loginErrorResponse = Gson().fromJson(response,LoginErrorResponse::class.java)  // this line convert the jason error in kotlin object of type
+                val response = e.response()?.errorBody()
+                    ?.string()          // this line get the error response and extract them into a e.body to string
+                val registerErrorResponse = Gson().fromJson(
+                    response,
+                    RegisterErrorResponse::class.java
+                )  // this line convert the jason error in kotlin object of type
 
-                userPostResponse.postValue(ApiState.Error(loginErrorResponse))
+                registerPostResponse.postValue(RegisterApiState.Error(registerErrorResponse))
             }
         }
-
 
 
     }
