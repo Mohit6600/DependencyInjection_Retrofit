@@ -1,6 +1,9 @@
 package com.example.dependencyinjection_retrofit.presentation.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.LoginFilter.UsernameFilterGMail
@@ -8,6 +11,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,8 +36,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var name: EditText
     lateinit var password: EditText
-    lateinit var saveBtn: Button
+    lateinit var btn: Button
     lateinit var textView: TextView
+    lateinit var saveBtn: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,16 +47,42 @@ class MainActivity : AppCompatActivity() {
 
         name = findViewById(R.id.name)
         password = findViewById(R.id.password)
-         saveBtn = findViewById(R.id.button)
-         textView = findViewById(R.id.textView)
+        btn = findViewById(R.id.button)
+        textView = findViewById(R.id.textView)
+        saveBtn = findViewById(R.id.saveBtn)
 
         /* initViews()*/
         setObservers()
 
-         GlobalScope.launch {
 
-             viewModel.loginUser("mohit6600","mohit123")
-         }
+
+
+        GlobalScope.launch {
+
+            btn.setOnClickListener{
+
+
+                val username = name.text.toString()
+                val userpassword = password.text.toString()
+
+                Log.d("singh", username)
+                viewModel.loginUser(username, userpassword)
+
+
+            }
+
+
+
+        }
+
+
+   /*     val sharedPreference: SharedPreferences =
+            getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
+            val editor = sharedPreference.edit()
+            editor.putString("userName", username)
+            editor.putString("userPassword", userpassword)
+            editor.apply()
+*/
 
 
     }
@@ -133,7 +164,6 @@ class MainActivity : AppCompatActivity() {
     fun setObservers() {
 
 
-
         viewModel.userPostResponseObserver.observe(this) { res ->
 
 
@@ -148,6 +178,12 @@ class MainActivity : AppCompatActivity() {
                 is ApiState.Success -> {
 
                     val user = res.data
+
+                        val intent = Intent(applicationContext, BlankClass::class.java)
+                        startActivity(intent)
+
+                    Toast.makeText(applicationContext,"login Successful",Toast.LENGTH_SHORT).show()
+                    textView.text = "login success"
 
                 }
 

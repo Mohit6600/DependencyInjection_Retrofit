@@ -1,6 +1,7 @@
 package com.example.dependencyinjection_retrofit.presentation.viewModels
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,6 +48,8 @@ class ProductViewModel @Inject constructor(
     var userPostResponseObserver: LiveData<ApiState> = userPostResponse
 
     fun loginUser(username: String, password: String) {
+
+        Log.d("Mohit",username)
         viewModelScope.launch {
             userPostResponse.postValue(ApiState.Loading)
             try {
@@ -60,6 +63,8 @@ class ProductViewModel @Inject constructor(
                 userPostResponse.postValue(ApiState.Error(loginErrorResponse))
             }
         }
+
+
 
     }
 }
