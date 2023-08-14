@@ -1,5 +1,6 @@
 package com.example.dependencyinjection_retrofit.presentation.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +29,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         initViews()
-
         setObserver()
         sendApiRequest()
     }
@@ -65,7 +65,7 @@ class RegisterActivity : AppCompatActivity() {
                 is RegisterApiState.Loading -> {
 
                     Log.e("Registerapi", "Loading..")
-                    registerBtn.text="Please wait.."
+                    registerBtn.text = "Please wait.."
 
                 }
 
@@ -74,11 +74,13 @@ class RegisterActivity : AppCompatActivity() {
 
                     Toast.makeText(this, "Account Registered Succcessfully", Toast.LENGTH_SHORT)
                         .show()
-                    registerBtn.text="Register"
+                    registerBtn.text = "Register"
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }
 
                 is RegisterApiState.Error -> {
-                    registerBtn.text="Register"
+                    registerBtn.text = "Register"
                     Toast.makeText(this, res.data.error.message, Toast.LENGTH_SHORT).show()
 
                 }
