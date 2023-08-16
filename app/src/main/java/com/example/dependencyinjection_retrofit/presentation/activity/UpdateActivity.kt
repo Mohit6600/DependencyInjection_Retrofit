@@ -74,8 +74,8 @@ class UpdateActivity : AppCompatActivity() {
                     "${updateEmail.text}",
                     "${updatePassword.text}",
                     "${updateName.text}",
-                    "$jwtToken.toString()",
-                    7
+                    "$jwtToken",
+                    20
 
                 )
 

@@ -103,19 +103,31 @@ class ProductViewModel @Inject constructor(
     private val updatePostResponse: MutableLiveData<UpdateApiState> = MutableLiveData()
     val updatePostResponseObserver: LiveData<UpdateApiState> = updatePostResponse
 
-    fun updateUser(updateEmail: String, updatePassword: String, updateUsername: String , authorizationToken:String,userId:Int) {
+    fun updateUser(
+        updateEmail: String,
+        updatePassword: String,
+        updateUsername: String,
+        authorizationToken: String,
+        userId: Int
+    ) {
 
         viewModelScope.launch {
 
             try {
 
                 val response =
-                    mainRepository.updateUser(updateEmail, updatePassword, updateUsername , authorizationToken,userId)
+                    mainRepository.updateUser(
+                        updateEmail,
+                        updatePassword,
+                        updateUsername,
+                        authorizationToken,
+                        userId
+                    )
                 updatePostResponse.postValue(UpdateApiState.Success(response))
             } catch (e: HttpException) {
 
                 val response = e.response()?.errorBody()?.string()
-                val updateErrorResponse = Gson().fromJson(response,UpdateErrorResponse::class.java)
+                val updateErrorResponse = Gson().fromJson(response, UpdateErrorResponse::class.java)
 
                 updatePostResponse.postValue(UpdateApiState.Error(updateErrorResponse))
 

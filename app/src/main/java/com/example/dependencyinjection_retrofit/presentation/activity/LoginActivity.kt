@@ -172,7 +172,7 @@ class LoginActivity : AppCompatActivity() {
                     intent.putExtra("userName", res.data.user.username)
                     intent.putExtra("email",res.data.user.email)
                     startActivity(intent)
-
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImlhdCI6MTY5MjE4NDcyNywiZXhwIjoxNjk0Nzc2NzI3fQ.yGgVqajL-JD_hS1UtUAvVyFKUCPcIalAt1_KMryobfY
 
                     Toast.makeText(applicationContext, "login Successful", Toast.LENGTH_SHORT)
                         .show()

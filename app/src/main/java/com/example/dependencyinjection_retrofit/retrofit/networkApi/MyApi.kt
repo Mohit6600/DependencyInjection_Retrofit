@@ -32,8 +32,8 @@ interface MyApi {
 
     @PUT("api/users/{id}")
     suspend fun updateUser(
-        @Path ("id") id:Int,
-       @Body Update: UpdateRequest, @Header ("Authorization Bearer Token") basicToken:String
+        @Path("id") id: Int,
+        @Body Update: UpdateRequest, @Header("Authorization") basicToken: String
     ): UpdateResponse
 
 

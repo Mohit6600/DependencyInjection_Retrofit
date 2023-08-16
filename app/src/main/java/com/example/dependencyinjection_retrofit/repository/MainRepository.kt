@@ -56,7 +56,7 @@ class MainRepository @Inject constructor(private val myApi: MyApi) {
 
         val updateItem = UpdateRequest(updateEmail, updatePassword, updateUsername)
 
-        return myApi.updateUser(userid, updateItem, authorizationToken)
+        return myApi.updateUser(userid, updateItem, "Bearer "+authorizationToken)
 
 
     }
