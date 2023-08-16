@@ -4,6 +4,9 @@ import com.example.dependencyinjection_retrofit.retrofit.response.login_response
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateRequest
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateResponse
 
 
 /*sealed class ApiState {
@@ -39,5 +42,16 @@ sealed class RegisterApiState{
     class  Success(val data: RegisterResponse): RegisterApiState()
 
     class Error(val data: RegisterErrorResponse): RegisterApiState()
+
+}
+
+sealed class UpdateApiState{
+
+    object Loading : UpdateApiState()
+
+    class Success(val data: UpdateResponse): UpdateApiState()
+
+    class Error( val data: UpdateErrorResponse): UpdateApiState()
+
 
 }

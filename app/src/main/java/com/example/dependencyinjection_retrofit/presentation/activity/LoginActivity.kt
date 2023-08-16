@@ -1,6 +1,8 @@
 package com.example.dependencyinjection_retrofit.presentation.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,18 +13,19 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dependencyinjection_retrofit.BlankClass
+import androidx.room.Room
 import com.example.dependencyinjection_retrofit.adapter.MyAdapter
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
 import com.example.dependencyinjection_retrofit.R
 import com.example.dependencyinjection_retrofit.database.AppDatabase
+import com.example.dependencyinjection_retrofit.database.UserData
 import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
 
     val viewModel: ProductViewModel by viewModels()
@@ -35,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var password: EditText
     lateinit var btn: Button
     lateinit var textView: TextView
-    lateinit var saveBtn: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,21 +61,13 @@ class MainActivity : AppCompatActivity() {
                 val username = name.text.toString()
                 val userpassword = password.text.toString()
 
-                Log.d("singh", username)
-                viewModel.loginUser(username, userpassword)
+               viewModel.loginUser(username, userpassword)
 
 
             }
         }
 
 
-        /*     val sharedPreference: SharedPreferences =
-                 getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
-                 val editor = sharedPreference.edit()
-                 editor.putString("userName", username)
-                 editor.putString("userPassword", userpassword)
-                 editor.apply()
-     */
     }
 
 
@@ -165,10 +159,20 @@ class MainActivity : AppCompatActivity() {
 
                 is LoginApiState.Success -> {
 
-                    val user = res.data
+                    val sharedPreference: SharedPreferences =
+                        getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
+                    val editor = sharedPreference.edit()
+                    editor.putString("jwtToken", res.data.jwt)
+                    editor.apply()
 
-                    val intent = Intent(applicationContext, BlankClass::class.java)
+                    database()
+
+                    val intent = Intent(applicationContext, UpdateActivity::class.java)
+
+                    intent.putExtra("userName", res.data.user.username)
+                    intent.putExtra("email",res.data.user.email)
                     startActivity(intent)
+
 
                     Toast.makeText(applicationContext, "login Successful", Toast.LENGTH_SHORT)
                         .show()
@@ -187,6 +191,45 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    fun database() {
+
+        database =
+            Room.databaseBuilder(applicationContext, AppDatabase::class.java, "my database").build()
+
+
+
+
+        btn.setOnClickListener {
+
+
+
+                val username = name.text.toString()
+                val password2 = password.text.toString()
+
+            if (!name.text.toString().isEmpty() && !password.text.toString().isEmpty()) {
+
+                GlobalScope.launch {
+
+                    database.userDao().insertUser(UserData(null,username, password2))
+
+
+
+//                    Log.e("mohit",)
+                }
+
+
+
+
+
+
+
+            }
+
+
+
+        }
+
+
+    }
 }
-
-

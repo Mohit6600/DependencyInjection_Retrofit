@@ -1,16 +1,14 @@
-package com.example.dependencyinjection_retrofit
+package com.example.dependencyinjection_retrofit.presentation.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.dependencyinjection_retrofit.presentation.activity.MainActivity
+import com.example.dependencyinjection_retrofit.R
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
-import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
 import com.example.dependencyinjection_retrofit.retrofit.utils.RegisterApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -40,33 +38,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
-        /*    database = Room.databaseBuilder(applicationContext,AppDatabase::class.java,"my database").build()
 
-
-            addUser = findViewById(R.id.addUser)
-            nameBox = findViewById(R.id.nameBox)
-            passwordBox = findViewById(R.id.passwordBox)
-            phoneNo = findViewById(R.id.phoneNo)
-
-            addUser.setOnClickListener{
-
-              *//*  if (!nameBox.text.toString().isEmpty() && !passwordBox.text.toString().isEmpty()){*//*
-
-                val username = nameBox.text.toString()
-                val password = passwordBox.text.toString()
-                val phoneNo1 = phoneNo.text.toString()
-
-
-                GlobalScope.launch {
-
-               database.userDao().insertUser(UserData(username,password,phoneNo1))
-
-
-                    database.userDao().getAllUser()
-
-                    Log.e("mohit", database.userDao().getAllUser().toString())
-
-                }*/
 
 
     }
@@ -123,7 +95,7 @@ class RegisterActivity : AppCompatActivity() {
                     )
                         .show()
 
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
                     startActivity(intent)
 
                 }

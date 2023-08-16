@@ -1,4 +1,4 @@
-package com.example.dependencyinjection_retrofit.retrofit.response
+package com.example.dependencyinjection_retrofit.retrofit.response.post_response
 
 data class ProductItem(
     val category: String,

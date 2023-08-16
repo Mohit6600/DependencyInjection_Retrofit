@@ -1,6 +1,6 @@
-package com.example.dependencyinjection_retrofit.retrofit.response
+package com.example.dependencyinjection_retrofit.retrofit.response.update_response
 
-data class User(
+data class UpdateResponse(
     val blocked: Boolean,
     val confirmed: Boolean,
     val createdAt: String,

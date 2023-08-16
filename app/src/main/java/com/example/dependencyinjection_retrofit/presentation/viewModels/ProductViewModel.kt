@@ -9,8 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.dependencyinjection_retrofit.repository.MainRepository
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
 import com.example.dependencyinjection_retrofit.retrofit.utils.RegisterApiState
+import com.example.dependencyinjection_retrofit.retrofit.utils.UpdateApiState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -51,7 +53,6 @@ class ProductViewModel @Inject constructor(
 
     fun loginUser(username: String, password: String) {
 
-        Log.d("Mohit", username)
         viewModelScope.launch {
             userPostResponse.postValue(LoginApiState.Loading)
             try {
@@ -98,4 +99,33 @@ class ProductViewModel @Inject constructor(
 
 
     }
+
+    private val updatePostResponse: MutableLiveData<UpdateApiState> = MutableLiveData()
+    val updatePostResponseObserver: LiveData<UpdateApiState> = updatePostResponse
+
+    fun updateUser(updateEmail: String, updatePassword: String, updateUsername: String , authorizationToken:String,userId:Int) {
+
+        viewModelScope.launch {
+
+            try {
+
+                val response =
+                    mainRepository.updateUser(updateEmail, updatePassword, updateUsername , authorizationToken,userId)
+                updatePostResponse.postValue(UpdateApiState.Success(response))
+            } catch (e: HttpException) {
+
+                val response = e.response()?.errorBody()?.string()
+                val updateErrorResponse = Gson().fromJson(response,UpdateErrorResponse::class.java)
+
+                updatePostResponse.postValue(UpdateApiState.Error(updateErrorResponse))
+
+            }
+
+
+        }
+
+
+    }
+
+
 }

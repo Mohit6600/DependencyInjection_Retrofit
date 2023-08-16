@@ -1,16 +1,20 @@
 package com.example.dependencyinjection_retrofit.retrofit.networkApi
 
-import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
-import com.example.dependencyinjection_retrofit.retrofit.response.ProductItem
-import com.example.dependencyinjection_retrofit.retrofit.response.ProductRequestItem
-import com.example.dependencyinjection_retrofit.retrofit.response.ProductResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.PersonItem
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductItem
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductRequestItem
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterRequest
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateRequest
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface MyApi {
 
@@ -21,13 +25,16 @@ interface MyApi {
     suspend fun addProduct(@Body product: ProductRequestItem): ProductItem
 
     @POST("api/auth/local")
-    suspend fun loginUser(@Body User:PersonItem):LoginResponse
+    suspend fun loginUser(@Body User: PersonItem): LoginResponse
 
     @POST("api/auth/local/register")
-    suspend fun registerUser(@Body Register : RegisterRequest):RegisterResponse
+    suspend fun registerUser(@Body Register: RegisterRequest): RegisterResponse
 
-    @PUT("api/auth/local")
-    suspend fun changeData(@Body UserData : PersonItem):LoginResponse
+    @PUT("api/users/{id}")
+    suspend fun updateUser(
+        @Path ("id") id:Int,
+       @Body Update: UpdateRequest, @Header ("Authorization Bearer Token") basicToken:String
+    ): UpdateResponse
 
 
 }

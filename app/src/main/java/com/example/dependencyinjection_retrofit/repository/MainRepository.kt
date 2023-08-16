@@ -1,11 +1,13 @@
 package com.example.dependencyinjection_retrofit.repository
 
 import com.example.dependencyinjection_retrofit.retrofit.networkApi.MyApi
-import com.example.dependencyinjection_retrofit.retrofit.response.PersonItem
-import com.example.dependencyinjection_retrofit.retrofit.response.ProductResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.PersonItem
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterRequest
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateRequest
+import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateResponse
 import javax.inject.Inject
 
 
@@ -38,8 +40,26 @@ class MainRepository @Inject constructor(private val myApi: MyApi) {
         return myApi.loginUser(personItem)
     }
 
-    suspend fun registerUser(email: String, password: String , username: String): RegisterResponse {
-        val registerItem = RegisterRequest(email, password , username)
+    suspend fun registerUser(email: String, password: String, username: String): RegisterResponse {
+        val registerItem = RegisterRequest(email, password, username)
         return myApi.registerUser(registerItem)
     }
+
+
+    suspend fun updateUser(
+        updateEmail: String,
+        updatePassword: String,
+        updateUsername: String,
+        authorizationToken: String,
+        userid: Int
+    ): UpdateResponse {
+
+        val updateItem = UpdateRequest(updateEmail, updatePassword, updateUsername)
+
+        return myApi.updateUser(userid, updateItem, authorizationToken)
+
+
+    }
+
+
 }
