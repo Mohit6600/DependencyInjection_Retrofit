@@ -8,8 +8,8 @@ import androidx.room.Query
 interface UserDao {
 
 @Insert
-fun insertUser(userData : UserData)
+suspend fun insertUser(userData : UserData)
 
 @Query("SELECT * FROM UserData")
- fun getAllUser(): List<UserData>
+ suspend fun getAllUser(): List<UserData>
 }

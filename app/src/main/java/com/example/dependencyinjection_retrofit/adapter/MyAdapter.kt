@@ -8,17 +8,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductItem
 import com.example.dependencyinjection_retrofit.R
+import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.post_response.User
 
-class MyAdapter(val context: Context, val myProductList: List<ProductItem>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val myProductList: List<LoginResponse>): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     class ViewHolder(itemView : View): RecyclerView.ViewHolder(itemView) {
 
-        var id = itemView.findViewById<TextView>(R.id.id)
-        var title = itemView.findViewById<TextView>(R.id.title)
+        var username = itemView.findViewById<TextView>(R.id.username)
+        var password = itemView.findViewById<TextView>(R.id.password)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-       val item = LayoutInflater.from(context).inflate(R.layout.raw_items,parent,false)
+       val item = LayoutInflater.from(parent.context).inflate(R.layout.raw_items,parent,false)
         return ViewHolder(item)
     }
 
@@ -28,8 +30,9 @@ class MyAdapter(val context: Context, val myProductList: List<ProductItem>): Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.id.text = myProductList[position].id.toString()
-        holder.title.text = myProductList[position].title
+        holder.username.text = myProductList[position].user.username
+      /*  holder.password.text = myProductList[position].password*/
 
     }
+
 }

@@ -52,6 +52,7 @@ class UpdateActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences =
             getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
         val jwtToken = sharedPreferences.getString("jwtToken", "")
+        val userId = sharedPreferences.getInt("userId",0)
 
         database =
             Room.databaseBuilder(applicationContext, AppDatabase::class.java, "my database").build()
@@ -75,7 +76,7 @@ class UpdateActivity : AppCompatActivity() {
                     "${updatePassword.text}",
                     "${updateName.text}",
                     "$jwtToken",
-                    20
+                    userId
 
                 )
 

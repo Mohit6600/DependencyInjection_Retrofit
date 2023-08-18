@@ -19,6 +19,7 @@ import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductV
 import com.example.dependencyinjection_retrofit.R
 import com.example.dependencyinjection_retrofit.database.AppDatabase
 import com.example.dependencyinjection_retrofit.database.UserData
+import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
 import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -38,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var password: EditText
     lateinit var btn: Button
     lateinit var textView: TextView
+    lateinit var showText: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +50,9 @@ class LoginActivity : AppCompatActivity() {
         password = findViewById(R.id.password)
         btn = findViewById(R.id.button)
         textView = findViewById(R.id.textView)
+        showText = findViewById(R.id.showText)
 
-        /* initViews()*/
+        initViews()
         setObservers()
 
 
@@ -61,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                 val username = name.text.toString()
                 val userpassword = password.text.toString()
 
-               viewModel.loginUser(username, userpassword)
+                viewModel.loginUser(username, userpassword)
 
 
             }
@@ -71,18 +74,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    /* fun initViews() {
-
-         textView = findViewById(R.id.textView)
+    fun initViews() {
 
 
-         recyclerView = findViewById(R.id.recyclerView)
-         recyclerView.setHasFixedSize(true)
-         linearLayoutManager = LinearLayoutManager(this)
-         recyclerView.layoutManager = linearLayoutManager
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.setHasFixedSize(true)
+        linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = linearLayoutManager
 
 
-     }*/
+    }
 
 
     /*       viewModel.productPostResponseObserver.observe(this){res ->
@@ -163,16 +164,25 @@ class LoginActivity : AppCompatActivity() {
                         getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
                     val editor = sharedPreference.edit()
                     editor.putString("jwtToken", res.data.jwt)
+                    editor.putInt("userId", res.data.user.id)
                     editor.apply()
 
-                    database()
 
-                    val intent = Intent(applicationContext, UpdateActivity::class.java)
+                     val intent = Intent(applicationContext, UpdateActivity::class.java)
 
-                    intent.putExtra("userName", res.data.user.username)
-                    intent.putExtra("email",res.data.user.email)
-                    startActivity(intent)
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImlhdCI6MTY5MjE4NDcyNywiZXhwIjoxNjk0Nzc2NzI3fQ.yGgVqajL-JD_hS1UtUAvVyFKUCPcIalAt1_KMryobfY
+                     intent.putExtra("userName", res.data.user.username)
+                     intent.putExtra("email", res.data.user.email)
+                     startActivity(intent)
+
+
+                    val ourProduct = res.data
+                    val list: MutableList<LoginResponse> = mutableListOf(ourProduct)
+
+                    myAdapter = MyAdapter(list)
+                    recyclerView.adapter = myAdapter
+                    myAdapter.notifyDataSetChanged()
+
+                    showText.text = res.data.user.username
 
                     Toast.makeText(applicationContext, "login Successful", Toast.LENGTH_SHORT)
                         .show()
@@ -197,39 +207,18 @@ class LoginActivity : AppCompatActivity() {
         database =
             Room.databaseBuilder(applicationContext, AppDatabase::class.java, "my database").build()
 
-
-
-
         btn.setOnClickListener {
+            val username = name.text.toString()
+            val password2 = password.text.toString()
 
-
-
-                val username = name.text.toString()
-                val password2 = password.text.toString()
-
-            if (!name.text.toString().isEmpty() && !password.text.toString().isEmpty()) {
+            if (username.isNotEmpty() && password2.isNotEmpty()) {
 
                 GlobalScope.launch {
 
-                    database.userDao().insertUser(UserData(null,username, password2))
+                    database.userDao().insertUser(UserData(null, username, password2))
 
-
-
-//                    Log.e("mohit",)
                 }
-
-
-
-
-
-
-
             }
-
-
-
         }
-
-
     }
 }

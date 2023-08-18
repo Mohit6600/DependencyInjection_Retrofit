@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [UserData::class], version = 2)
+@Database(entities = [UserData::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
-abstract  fun userDao() : UserDao
+    abstract  fun userDao() : UserDao
 
 }
