@@ -35,4 +35,12 @@
         android:text="Update"
         android:layout_below="@+id/email"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_below="@+id/updateBtn"/>
+
+
 </RelativeLayout>

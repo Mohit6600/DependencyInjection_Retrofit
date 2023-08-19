@@ -17,7 +17,6 @@ import androidx.room.Room
 import com.example.dependencyinjection_retrofit.adapter.MyAdapter
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
 import com.example.dependencyinjection_retrofit.R
-import com.example.dependencyinjection_retrofit.adapter.UserItem
 import com.example.dependencyinjection_retrofit.database.AppDatabase
 import com.example.dependencyinjection_retrofit.database.UserData
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
@@ -54,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
         btn = findViewById(R.id.button)
         textView = findViewById(R.id.textView)
         showText = findViewById(R.id.showText)
-        saveBtn = findViewById(R.id.saveBtn)
 
         userList = mutableListOf<UserData>() as ArrayList<UserData>
 
@@ -176,11 +174,11 @@ class LoginActivity : AppCompatActivity() {
                     editor.apply()
 
 
-                    /* val intent = Intent(applicationContext, UpdateActivity::class.java)
+                     val intent = Intent(applicationContext, UpdateActivity::class.java)
 
                      intent.putExtra("userName", res.data.user.username)
                      intent.putExtra("email", res.data.user.email)
-                     startActivity(intent)*/
+                     startActivity(intent)
 
 
                     val ourProduct = res.data

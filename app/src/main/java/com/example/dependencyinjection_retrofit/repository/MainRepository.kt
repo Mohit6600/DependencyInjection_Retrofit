@@ -1,6 +1,7 @@
 package com.example.dependencyinjection_retrofit.repository
 
 import com.example.dependencyinjection_retrofit.retrofit.networkApi.MyApi
+import com.example.dependencyinjection_retrofit.retrofit.response.delete_response.DeleteResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.post_response.PersonItem
 import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterRequest
@@ -56,8 +57,18 @@ class MainRepository @Inject constructor(private val myApi: MyApi) {
 
         val updateItem = UpdateRequest(updateEmail, updatePassword, updateUsername)
 
-        return myApi.updateUser(userid, updateItem, "Bearer " + authorizationToken)     // always give a space after writing bearer for token
+        return myApi.updateUser(
+            userid,
+            updateItem,
+            "Bearer " + authorizationToken
+        )     // always give a space after writing bearer for token
 
+
+    }
+
+    suspend fun deleteUser(authorizationToken: String, userid: Int): DeleteResponse {
+
+        return myApi.deleteUser(userid, "Bearer " + authorizationToken)
 
     }
 

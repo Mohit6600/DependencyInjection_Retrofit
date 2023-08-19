@@ -1,0 +1,3 @@
+package com.example.dependencyinjection_retrofit.retrofit.response.delete_response
+
+class Details

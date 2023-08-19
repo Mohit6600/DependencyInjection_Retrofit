@@ -1,5 +1,6 @@
 package com.example.dependencyinjection_retrofit.retrofit.networkApi
 
+import com.example.dependencyinjection_retrofit.retrofit.response.delete_response.DeleteResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.post_response.PersonItem
 import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductItem
 import com.example.dependencyinjection_retrofit.retrofit.response.post_response.ProductRequestItem
@@ -10,6 +11,7 @@ import com.example.dependencyinjection_retrofit.retrofit.response.register_respo
 import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateRequest
 import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -21,8 +23,8 @@ interface MyApi {
     @GET("products")
     suspend fun getData(): ProductResponse
 
-    @POST("products")
-    suspend fun addProduct(@Body product: ProductRequestItem): ProductItem
+   /* @POST("products")
+    suspend fun addProduct(@Body product: ProductRequestItem): ProductItem*/
 
     @POST("api/auth/local")
     suspend fun loginUser(@Body User: PersonItem): LoginResponse
@@ -36,5 +38,10 @@ interface MyApi {
         @Body Update: UpdateRequest, @Header("Authorization") basicToken: String
     ): UpdateResponse
 
+    @DELETE("api/users/{id}")
+    suspend fun deleteUser(
+        @Path("id") id: Int,
+        @Header("Authorization") token: String
+    ): DeleteResponse
 
 }

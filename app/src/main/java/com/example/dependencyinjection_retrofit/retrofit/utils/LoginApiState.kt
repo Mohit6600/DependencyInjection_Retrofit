@@ -1,5 +1,7 @@
 package com.example.dependencyinjection_retrofit.retrofit.utils
 
+import com.example.dependencyinjection_retrofit.retrofit.response.delete_response.DeleteErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.response.delete_response.DeleteResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterErrorResponse
@@ -53,5 +55,15 @@ sealed class UpdateApiState{
 
     class Error( val data: UpdateErrorResponse): UpdateApiState()
 
+
+}
+
+sealed class DeleteApiState{
+
+    object Loading:DeleteApiState()
+
+    class Success(val data:DeleteResponse): DeleteApiState()
+
+    class Error(val data:DeleteErrorResponse):DeleteApiState()
 
 }

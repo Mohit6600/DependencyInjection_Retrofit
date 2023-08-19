@@ -1,15 +1,16 @@
 package com.example.dependencyinjection_retrofit.presentation.viewModels
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dependencyinjection_retrofit.repository.MainRepository
+import com.example.dependencyinjection_retrofit.retrofit.response.delete_response.DeleteErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.register_response.RegisterErrorResponse
 import com.example.dependencyinjection_retrofit.retrofit.response.update_response.UpdateErrorResponse
+import com.example.dependencyinjection_retrofit.retrofit.utils.DeleteApiState
 import com.example.dependencyinjection_retrofit.retrofit.utils.LoginApiState
 import com.example.dependencyinjection_retrofit.retrofit.utils.RegisterApiState
 import com.example.dependencyinjection_retrofit.retrofit.utils.UpdateApiState
@@ -136,6 +137,29 @@ class ProductViewModel @Inject constructor(
 
         }
 
+
+    }
+
+    private val deletePostResponse: MutableLiveData<DeleteApiState> = MutableLiveData()
+     val deleteUserResponseObserver:LiveData<DeleteApiState> = deletePostResponse
+
+    fun deleteUser( userId: Int,authorizationToken: String){
+
+        viewModelScope.launch {
+
+
+            try {
+                val response= mainRepository.deleteUser(authorizationToken,userId)
+                deletePostResponse.postValue(DeleteApiState.Success(response))
+            }catch (e:HttpException){
+
+                val response = e.response()?.errorBody()?.string()              //doubt
+                val deleteErrorResponse = Gson().fromJson(response,DeleteErrorResponse::class.java)
+
+                deletePostResponse.postValue(DeleteApiState.Error(deleteErrorResponse))
+
+            }
+        }
 
     }
 

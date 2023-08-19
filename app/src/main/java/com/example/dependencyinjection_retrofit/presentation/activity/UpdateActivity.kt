@@ -14,6 +14,7 @@ import androidx.room.Room
 import com.example.dependencyinjection_retrofit.R
 import com.example.dependencyinjection_retrofit.database.AppDatabase
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
+import com.example.dependencyinjection_retrofit.retrofit.utils.DeleteApiState
 import com.example.dependencyinjection_retrofit.retrofit.utils.UpdateApiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -23,12 +24,14 @@ import kotlinx.coroutines.launch
 class UpdateActivity : AppCompatActivity() {
 
     val updateViewModel: ProductViewModel by viewModels()
+    val deleteViewModel:ProductViewModel by viewModels()
 
     lateinit var updateName: EditText
     lateinit var updatePassword: EditText
     lateinit var updateEmail: EditText
     lateinit var updateBtn: Button
     lateinit var database: AppDatabase
+    lateinit var deleteBtn: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +41,8 @@ class UpdateActivity : AppCompatActivity() {
 
 
         init()
-        setObserver()
+        updateSetObserver()
+        deleteSetObserver()
 
     }
 
@@ -48,6 +52,7 @@ class UpdateActivity : AppCompatActivity() {
         updatePassword = findViewById(R.id.passwordBox)
         updateName = findViewById(R.id.nameBox)
         updateBtn = findViewById(R.id.updateBtn)
+        deleteBtn = findViewById(R.id.deleteBtn)
 
         val sharedPreferences: SharedPreferences =
             getSharedPreferences("Mohit Code", Context.MODE_PRIVATE)
@@ -86,11 +91,26 @@ class UpdateActivity : AppCompatActivity() {
 
         }
 
+        deleteBtn.setOnClickListener{
+
+            GlobalScope.launch{
+
+                deleteViewModel.deleteUser(
+                    userId,
+                    "$jwtToken"
+                )
+
+            }
+
+        }
+
+
+
 
     }
 
 
-    private fun setObserver() {
+    private fun updateSetObserver() {
 
         updateViewModel.updatePostResponseObserver.observe(this) { res ->
 
@@ -116,6 +136,48 @@ class UpdateActivity : AppCompatActivity() {
                 }
 
                 is UpdateApiState.Error -> {
+
+                    val user = res.data
+
+                    Toast.makeText(applicationContext, user.error.message, Toast.LENGTH_SHORT)
+                        .show()
+
+
+                }
+
+            }
+
+
+        }
+
+    }
+
+    private fun deleteSetObserver() {
+
+        deleteViewModel.deleteUserResponseObserver.observe(this) { res ->
+
+            when (res) {
+
+                is DeleteApiState.Loading -> {
+
+                    Toast.makeText(applicationContext, "Please Wait....", Toast.LENGTH_SHORT).show()
+
+                }
+
+                is DeleteApiState.Success -> {
+
+
+                    Toast.makeText(
+                        applicationContext,
+                        "delete User Account",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+
+                is DeleteApiState.Error -> {
 
                     val user = res.data
 
