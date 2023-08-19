@@ -17,6 +17,7 @@ import androidx.room.Room
 import com.example.dependencyinjection_retrofit.adapter.MyAdapter
 import com.example.dependencyinjection_retrofit.presentation.viewModels.ProductViewModel
 import com.example.dependencyinjection_retrofit.R
+import com.example.dependencyinjection_retrofit.adapter.UserItem
 import com.example.dependencyinjection_retrofit.database.AppDatabase
 import com.example.dependencyinjection_retrofit.database.UserData
 import com.example.dependencyinjection_retrofit.retrofit.response.login_response.LoginResponse
@@ -40,6 +41,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var btn: Button
     lateinit var textView: TextView
     lateinit var showText: TextView
+    lateinit var saveBtn: Button
+    lateinit var userList : ArrayList<UserData>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,21 +54,26 @@ class LoginActivity : AppCompatActivity() {
         btn = findViewById(R.id.button)
         textView = findViewById(R.id.textView)
         showText = findViewById(R.id.showText)
+        saveBtn = findViewById(R.id.saveBtn)
+
+        userList = mutableListOf<UserData>() as ArrayList<UserData>
+
+        database =
+            Room.databaseBuilder(applicationContext, AppDatabase::class.java, "my database")
+                .fallbackToDestructiveMigration().build()
 
         initViews()
+
         setObservers()
 
-
-        GlobalScope.launch {
-
-            btn.setOnClickListener {
+        btn.setOnClickListener {
+            GlobalScope.launch {
 
 
                 val username = name.text.toString()
                 val userpassword = password.text.toString()
 
                 viewModel.loginUser(username, userpassword)
-
 
             }
         }
@@ -168,25 +176,38 @@ class LoginActivity : AppCompatActivity() {
                     editor.apply()
 
 
-                     val intent = Intent(applicationContext, UpdateActivity::class.java)
+                    /* val intent = Intent(applicationContext, UpdateActivity::class.java)
 
                      intent.putExtra("userName", res.data.user.username)
                      intent.putExtra("email", res.data.user.email)
-                     startActivity(intent)
+                     startActivity(intent)*/
 
 
                     val ourProduct = res.data
-                    val list: MutableList<LoginResponse> = mutableListOf(ourProduct)
+                    /*   val list: MutableList<LoginResponse> = mutableListOf(ourProduct)*/
 
-                    myAdapter = MyAdapter(list)
-                    recyclerView.adapter = myAdapter
-                    myAdapter.notifyDataSetChanged()
+
+
+                      /*  =  database.userDao().getAllUser()*/
+
+                        myAdapter = MyAdapter(applicationContext, userList)
+                        recyclerView.adapter = myAdapter
+                        myAdapter.notifyDataSetChanged()
+
+
+
+
+
+                   /* Log.e("mohitcode", list.toString())*/
 
                     showText.text = res.data.user.username
 
                     Toast.makeText(applicationContext, "login Successful", Toast.LENGTH_SHORT)
                         .show()
                     textView.text = "login success"
+
+                    database()
+
 
                 }
 
@@ -204,21 +225,23 @@ class LoginActivity : AppCompatActivity() {
 
     fun database() {
 
-        database =
-            Room.databaseBuilder(applicationContext, AppDatabase::class.java, "my database").build()
+        /*  Log.e("mohitcode","success")*/
 
-        btn.setOnClickListener {
-            val username = name.text.toString()
-            val password2 = password.text.toString()
+        val username = name.text.toString()
+        val password2 = password.text.toString()
 
-            if (username.isNotEmpty() && password2.isNotEmpty()) {
+        if (username.isNotEmpty() && password2.isNotEmpty()) {
 
-                GlobalScope.launch {
+            GlobalScope.launch {
 
-                    database.userDao().insertUser(UserData(null, username, password2))
+                database.userDao().insertUser(UserData(null, username, password2))
+                userList.clear()
+                userList.addAll(database.userDao().getAllUser())
 
-                }
+
             }
         }
+
+
     }
 }
