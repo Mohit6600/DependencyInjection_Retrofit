@@ -26,18 +26,23 @@ interface MyApi {
    /* @POST("products")
     suspend fun addProduct(@Body product: ProductRequestItem): ProductItem*/
 
-    @POST("api/auth/local")
-    suspend fun loginUser(@Body User: PersonItem): LoginResponse
-
+  // this api is used to register a user
     @POST("api/auth/local/register")
     suspend fun registerUser(@Body Register: RegisterRequest): RegisterResponse
 
+    // this api is used to login a user account
+    @POST("api/auth/local")
+    suspend fun loginUser(@Body User: PersonItem): LoginResponse
+
+    //this api is used to update the detail of the user for that we need a authorization token and user id we have to provide without those it will not work also
+    //id will be defined as "Path"  and "Header" is used for the toke we received whenever we login the id
     @PUT("api/users/{id}")
     suspend fun updateUser(
         @Path("id") id: Int,
         @Body Update: UpdateRequest, @Header("Authorization") basicToken: String
     ): UpdateResponse
 
+    // this api is used for delete the user data from the Url or site
     @DELETE("api/users/{id}")
     suspend fun deleteUser(
         @Path("id") id: Int,

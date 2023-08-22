@@ -21,6 +21,8 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
+//by using @HiltViewModel and the @Inject annotation, Hilt will automatically give your ViewModel the needed tools or dependencies that require.
+// You don't have to write extra code to find and give these tools to your ViewModel.
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     @ApplicationContext private val context: Context, private val mainRepository: MainRepository
@@ -49,12 +51,14 @@ class ProductViewModel @Inject constructor(
 
     }*/
 
+    //here we declare a variable that hold a live data that change time to time with our apistate
+
     private val userPostResponse: MutableLiveData<LoginApiState> = MutableLiveData()
     var userPostResponseObserver: LiveData<LoginApiState> = userPostResponse
 
     fun loginUser(username: String, password: String) {
 
-        viewModelScope.launch {
+        viewModelScope.launch {             // it is used when we create a suspend function
             userPostResponse.postValue(LoginApiState.Loading)
             try {
                 val response = mainRepository.loginUser(username, password)

@@ -27,7 +27,8 @@ import com.example.dependencyinjection_retrofit.retrofit.response.update_respons
 
 }*/
 
-// this is used for user api
+
+// the sealed class here is create for seeing a different stages for api working it helps in clean coding
 
 sealed class LoginApiState{
 

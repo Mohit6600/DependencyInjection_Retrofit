@@ -12,6 +12,7 @@ import com.example.dependencyinjection_retrofit.retrofit.response.update_respons
 import javax.inject.Inject
 
 
+// @inject helps to integrate myApi through constructor or dependencies required for that class should be injected through the constructor.
 class MainRepository @Inject constructor(private val myApi: MyApi) {
 
 
@@ -58,9 +59,7 @@ class MainRepository @Inject constructor(private val myApi: MyApi) {
         val updateItem = UpdateRequest(updateEmail, updatePassword, updateUsername)
 
         return myApi.updateUser(
-            userid,
-            updateItem,
-            "Bearer " + authorizationToken
+            userid, updateItem, "Bearer " + authorizationToken
         )     // always give a space after writing bearer for token
 
 
